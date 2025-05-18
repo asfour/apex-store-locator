@@ -2,7 +2,7 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { PrismaClient } from "@prisma/client";
 import { Page, Layout, Card, TextContainer } from "@shopify/polaris";
-import { requireAdminSession } from "~/shopify.server";
+import { requireAdminSession } from "../shopify.server";
 
 export const loader = async ({ request }) => {
   const session = await requireAdminSession(request);
