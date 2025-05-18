@@ -5,11 +5,16 @@ import styles from "./styles.module.css";
 
 export const loader = async ({ request }) => {
   const url = new URL(request.url);
+  const isEmbedded = url.searchParams.get("embedded") === "1";
+  const shop = url.searchParams.get("shop");
 
-  if (url.searchParams.get("shop")) {
-    throw redirect(`/app?${url.searchParams.toString()}`);
+  // ✅ If not embedded but has shop param, redirect to Shopify's embedded admin path
+  if (shop && !isEmbedded) {
+    const host = url.searchParams.get("host") || "";
+    return redirect(
+      `https://${shop}/admin/apps/${process.env.SHOPIFY_API_KEY}?${url.searchParams.toString()}`
+    );
   }
-
   return { showForm: Boolean(login) };
 };
 
